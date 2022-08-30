@@ -39,10 +39,10 @@ int main(int argc, char ** argv)
 
   // Get parameter values
   auto temp = std::make_shared<rclcpp::Node>("get_joy_params_node", options);
-  temp->declare_parameter("ignore");
-  temp->declare_parameter("enable");
-  temp->declare_parameter("svel");
-  temp->declare_parameter("max_steer_angle");
+  temp->declare_parameter<bool>("ignore");
+  temp->declare_parameter<bool>("enable");
+  temp->declare_parameter<double>("svel");
+  temp->declare_parameter<double>("max_steer_angle");
 
   bool n_ignore = temp->get_parameter("ignore").as_bool();
   bool n_enable = temp->get_parameter("enable").as_bool();
