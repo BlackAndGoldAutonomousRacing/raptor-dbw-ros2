@@ -73,13 +73,18 @@ def generate_launch_description():
                     {'dbw_dbc_file': dbc_file_path},
                     params_file
                 ],
+                remappings=[
+                    ('/raptor_dbw_interface/can_rx', '/from_can_bus'),
+                    ('/raptor_dbw_interface/can_tx', '/to_can_bus'),
+                ],
             ),
-            Node(
-                package='kvaser_interface',
-                executable='kvaser_can_bridge',
-                output='screen',
-                namespace='raptor_dbw_interface',
-                parameters=[params_file]),
+            #LifecycleNode(
+            #    package='kvaser_interface',
+            #    executable='kvaser_can_bridge',
+            #    node_name = "kvaser_interface",
+            #    output='screen',
+            #    namespace='raptor_dbw_interface',
+            #    parameters=[params_file]),
         ])
 
 

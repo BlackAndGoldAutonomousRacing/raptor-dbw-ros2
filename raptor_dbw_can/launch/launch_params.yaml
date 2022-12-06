@@ -1,7 +1,7 @@
 /**:
   ros__parameters:
   # Kvaser node parameters
-    hardware_id: 22024
+    hardware_id: 42774
     circuit_id: 0
     bit_rate: 500000
     enable_echo: false

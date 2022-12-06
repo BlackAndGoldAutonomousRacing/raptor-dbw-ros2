@@ -27,7 +27,6 @@
 // POSSIBILITY OF SUCH DAMAGE.
 
 #include <memory>
-#include <string>
 
 #include "raptor_dbw_can/raptor_dbw_can.hpp"
 
@@ -37,20 +36,7 @@ int main(int argc, char ** argv)
   rclcpp::NodeOptions options{};
   rclcpp::executors::SingleThreadedExecutor exec{};
 
-  // Get parameter values
-  auto temp = std::make_shared<rclcpp::Node>("get_dbw_params_node", options);
-  temp->declare_parameter<std::string>("dbw_dbc_file");
-  temp->declare_parameter<double>("max_steer_angle");
-
-  std::string n_dbw_dbc_file = temp->get_parameter("dbw_dbc_file").as_string();
-  float n_max_steer_angle = temp->get_parameter("max_steer_angle").as_double();
-
-  // Create RaptorDbwCAN class
-  auto node = std::make_shared<raptor_dbw_can::RaptorDbwCAN>(
-    options,
-    n_dbw_dbc_file,
-    n_max_steer_angle
-  );
+  auto node = std::make_shared<raptor_dbw_can::RaptorDbwCAN>(options);
   exec.add_node(node->get_node_base_interface());
   exec.spin();
 
