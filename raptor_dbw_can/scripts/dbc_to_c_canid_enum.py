@@ -14,7 +14,7 @@ namespace raptor_dbw_can
 #undef BUILD_ASSERT
 
 /** \\brief Enumeration of CAN message IDs */
-enum ListMessageIDs
+enum class MessageID
 {
 
 """
@@ -57,7 +57,7 @@ def generate_c_canid_enum_header(dbcfile:str, enum_header_file:str):
         # sort using can_id
         sorted_dict_items = sorted(can_ids.items(), key=lambda x: x[1])
         for key, value in sorted_dict_items:
-            f.write('ID_' + key.upper() + ' = 0x' + value + ',\n')
+            f.write(key.upper() + ' = 0x' + value + ',\n')
         f.write(header_end)
         f.close()
 

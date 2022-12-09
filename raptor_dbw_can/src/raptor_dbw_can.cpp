@@ -154,40 +154,40 @@ void RaptorDbwCAN::recvCAN(const can_msgs::msg::Frame::SharedPtr msg)
   const uint8_t part3 = 3;
   const uint8_t part4 = 4;
 
-  switch (msg->id) {
-    case ID_BASE_TO_CAR_TIMING:
+  switch (static_cast<MessageID>(msg->id)) {
+    case MessageID::BASE_TO_CAR_TIMING:
       recvDOLapTimeRpt(msg);
       break;
 
-    case ID_BASE_TO_CAR_SUMMARY:
+    case MessageID::BASE_TO_CAR_SUMMARY:
       recvDORcToCtRpt(msg);
       break;
 
-    case ID_WHEEL_SPEED_REPORT:
+    case MessageID::WHEEL_SPEED_REPORT:
       recvWheelSpeedRpt(msg);
       break;
 
-    case ID_BRAKE_PRESSURE_REPORT:
+    case MessageID::BRAKE_PRESSURE_REPORT:
       recvBrake2Rpt(msg);
       break;
 
-    case ID_ACCELERATOR_REPORT:
+    case MessageID::ACCELERATOR_REPORT:
       recvAccelPedalRpt(msg);
       break;
 
-    case ID_STEERING_REPORT:
+    case MessageID::STEERING_REPORT:
       recvSteeringRpt(msg);
       break;
 
-    case ID_STEERING_REPORT_EXTD:
+    case MessageID::STEERING_REPORT_EXTD:
       recvSteeringExtdRpt(msg);
       break;
 
-    case ID_MISC_REPORT:
+    case MessageID::MISC_REPORT:
       recvDOMiscRpt(msg);
       break;
 
-    case ID_DIAGNOSTIC_REPORT:
+    case MessageID::DIAGNOSTIC_REPORT:
       recvDODiagRpt(msg);
       break;
 
@@ -211,103 +211,103 @@ void RaptorDbwCAN::recvCAN(const can_msgs::msg::Frame::SharedPtr msg)
       break;
     */
 
-    case ID_PT_REPORT_1:
+    case MessageID::PT_REPORT_1:
       recvDOPtRptPart1(msg);
       break;
 
-    case ID_PT_REPORT_2:
+    case MessageID::PT_REPORT_2:
       recvDOPtRptPart2(msg);
       break;
 
-    case ID_PT_REPORT_3:
+    case MessageID::PT_REPORT_3:
       recvDOPtRptPart3(msg);
       break;
 
-    case ID_TIRE_PRESSURE_FL:
+    case MessageID::TIRE_PRESSURE_FL:
       recvTirePressureRpt(msg, static_cast<unsigned int>(msg->id), fl);
       break;
 
-    case ID_TIRE_PRESSURE_FR:
+    case MessageID::TIRE_PRESSURE_FR:
       recvTirePressureRpt(msg, static_cast<unsigned int>(msg->id), fr);
       break;
 
-    case ID_TIRE_PRESSURE_RL:
+    case MessageID::TIRE_PRESSURE_RL:
       recvTirePressureRpt(msg, static_cast<unsigned int>(msg->id), rl);
       break;
     
-    case ID_TIRE_PRESSURE_RR:
+    case MessageID::TIRE_PRESSURE_RR:
       recvTirePressureRpt(msg, static_cast<unsigned int>(msg->id), rr);
       break;
 
-    case ID_TIRE_TEMP_FL_1:
+    case MessageID::TIRE_TEMP_FL_1:
       recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), fl, part1);
       break;
 
-    case ID_TIRE_TEMP_FL_2:
+    case MessageID::TIRE_TEMP_FL_2:
       recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), fl, part2);
       break;
 
-    case ID_TIRE_TEMP_FL_3:
+    case MessageID::TIRE_TEMP_FL_3:
       recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), fl, part3);
       break;
 
-    case ID_TIRE_TEMP_FL_4:
+    case MessageID::TIRE_TEMP_FL_4:
       recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), fl, part4);
       break;
 
-    case ID_TIRE_TEMP_FR_1:
+    case MessageID::TIRE_TEMP_FR_1:
       recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), fr, part1);
       break;
 
-    case ID_TIRE_TEMP_FR_2:
+    case MessageID::TIRE_TEMP_FR_2:
       recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), fr, part2);
       break;
 
-    case ID_TIRE_TEMP_FR_3:
+    case MessageID::TIRE_TEMP_FR_3:
       recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), fr, part3);
       break;
 
-    case ID_TIRE_TEMP_FR_4:
+    case MessageID::TIRE_TEMP_FR_4:
       recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), fr, part4);
       break;
 
-    case ID_TIRE_TEMP_RL_1:
+    case MessageID::TIRE_TEMP_RL_1:
       recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), rl, part1);
       break;
 
-    case ID_TIRE_TEMP_RL_2:
+    case MessageID::TIRE_TEMP_RL_2:
       recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), rl, part2);
       break;
 
-    case ID_TIRE_TEMP_RL_3:
+    case MessageID::TIRE_TEMP_RL_3:
       recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), rl, part3);
       break;
 
-    case ID_TIRE_TEMP_RL_4:
+    case MessageID::TIRE_TEMP_RL_4:
       recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), rl, part4);
       break;
 
-    case ID_TIRE_TEMP_RR_1:
+    case MessageID::TIRE_TEMP_RR_1:
       recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), rr, part1);
       break;
 
-    case ID_TIRE_TEMP_RR_2:
+    case MessageID::TIRE_TEMP_RR_2:
       recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), rr, part2);
       break;
 
-    case ID_TIRE_TEMP_RR_3:
+    case MessageID::TIRE_TEMP_RR_3:
       recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), rr, part3);
       break;
 
-    case ID_TIRE_TEMP_RR_4:
+    case MessageID::TIRE_TEMP_RR_4:
       recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), rr, part4);
       break;
     
-    case ID_WHEEL_STRAIN_GAUGE:
+    case MessageID::WHEEL_STRAIN_GAUGE:
       recvWheelStrainGaugeRpt(msg);
       break; 
 
-    case ID_WHEEL_POTENTIOMETER_DATA:
+    case MessageID::WHEEL_POTENTIOMETER_DATA:
       recvWheelPotentialmeterRpt(msg);
       break;
 
@@ -318,7 +318,7 @@ void RaptorDbwCAN::recvCAN(const can_msgs::msg::Frame::SharedPtr msg)
 
 void RaptorDbwCAN::recvAccelPedalRpt(const Frame::SharedPtr msg)
 {
-  NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(ID_ACCELERATOR_REPORT);
+  NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(MessageID::ACCELERATOR_REPORT);
   if (msg->dlc < message->GetDlc())
     return;
 
@@ -333,7 +333,7 @@ void RaptorDbwCAN::recvAccelPedalRpt(const Frame::SharedPtr msg)
 
 void RaptorDbwCAN::recvSteeringRpt(const Frame::SharedPtr msg)
 {
-  NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(ID_STEERING_REPORT);
+  NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(MessageID::STEERING_REPORT);
   if (msg->dlc < message->GetDlc())
     return;
 
@@ -349,7 +349,7 @@ void RaptorDbwCAN::recvSteeringRpt(const Frame::SharedPtr msg)
 
 void RaptorDbwCAN::recvSteeringExtdRpt(const Frame::SharedPtr msg)
 {
-  NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(ID_STEERING_REPORT_EXTD);
+  NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(MessageID::STEERING_REPORT_EXTD);
   if (msg->dlc < message->GetDlc())
     return;
 
@@ -364,7 +364,7 @@ void RaptorDbwCAN::recvSteeringExtdRpt(const Frame::SharedPtr msg)
 
 void RaptorDbwCAN::recvDOLapTimeRpt(const Frame::SharedPtr msg)
 {
-  NewEagle::DbcMessage * message = dbwDbc_.GetMessageById(ID_BASE_TO_CAR_TIMING);
+  NewEagle::DbcMessage * message = dbwDbc_.GetMessageById(MessageID::BASE_TO_CAR_TIMING);
   if (msg->dlc < message->GetDlc())
     return;
   message->SetFrame(msg);
@@ -379,7 +379,7 @@ void RaptorDbwCAN::recvDOLapTimeRpt(const Frame::SharedPtr msg)
 
 void RaptorDbwCAN::recvDORcToCtRpt(const Frame::SharedPtr msg)
 {
-  NewEagle::DbcMessage * message = dbwDbc_.GetMessageById(ID_BASE_TO_CAR_SUMMARY);
+  NewEagle::DbcMessage * message = dbwDbc_.GetMessageById(MessageID::BASE_TO_CAR_SUMMARY);
   if (msg->dlc < message->GetDlc())
     return;
   message->SetFrame(msg);
@@ -397,7 +397,7 @@ void RaptorDbwCAN::recvDORcToCtRpt(const Frame::SharedPtr msg)
 
 void RaptorDbwCAN::recvWheelSpeedRpt(const Frame::SharedPtr msg)
 {
-  NewEagle::DbcMessage * message = dbwDbc_.GetMessageById(ID_WHEEL_SPEED_REPORT);
+  NewEagle::DbcMessage * message = dbwDbc_.GetMessageById(MessageID::WHEEL_SPEED_REPORT);
 
   if (msg->dlc < message->GetDlc())
     return;
@@ -448,7 +448,7 @@ void RaptorDbwCAN::recvTireTempRpt(const Frame::SharedPtr msg,
 
 void RaptorDbwCAN::recvBrake2Rpt(const Frame::SharedPtr msg)
 {
-  NewEagle::DbcMessage * message = dbwDbc_.GetMessageById(ID_BRAKE_PRESSURE_REPORT);
+  NewEagle::DbcMessage * message = dbwDbc_.GetMessageById(MessageID::BRAKE_PRESSURE_REPORT);
 
   if (msg->dlc < message->GetDlc())
     return;
@@ -467,7 +467,7 @@ void RaptorDbwCAN::recvBrake2Rpt(const Frame::SharedPtr msg)
 
 void RaptorDbwCAN::recvDOMiscRpt(const Frame::SharedPtr msg)
 {
-  NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(ID_MISC_REPORT);
+  NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(MessageID::MISC_REPORT);
   if (msg->dlc < message->GetDlc())
     return;
 
@@ -484,7 +484,7 @@ void RaptorDbwCAN::recvDOMiscRpt(const Frame::SharedPtr msg)
 
 void RaptorDbwCAN::recvDODiagRpt(const Frame::SharedPtr msg)
 {
-  NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(ID_DIAGNOSTIC_REPORT);
+  NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(MessageID::DIAGNOSTIC_REPORT);
   if (msg->dlc < message->GetDlc())
     return;
 
@@ -515,7 +515,7 @@ void RaptorDbwCAN::recvDODiagRpt(const Frame::SharedPtr msg)
 
 void RaptorDbwCAN::recvDOPtRptPart1(const Frame::SharedPtr msg)
 {
-  NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(ID_PT_REPORT_1);
+  NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(MessageID::PT_REPORT_1);
   if (msg->dlc < message->GetDlc())
     return;
   message->SetFrame(msg);
@@ -529,7 +529,7 @@ void RaptorDbwCAN::recvDOPtRptPart1(const Frame::SharedPtr msg)
 
 void RaptorDbwCAN::recvDOPtRptPart2(const Frame::SharedPtr msg)
 {
-  NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(ID_PT_REPORT_2);
+  NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(MessageID::PT_REPORT_2);
   if (msg->dlc < message->GetDlc())
     return;
   message->SetFrame(msg);
@@ -542,7 +542,7 @@ void RaptorDbwCAN::recvDOPtRptPart2(const Frame::SharedPtr msg)
 
 void RaptorDbwCAN::recvDOPtRptPart3(const Frame::SharedPtr msg)
 {
-  NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(ID_PT_REPORT_3);
+  NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(MessageID::PT_REPORT_3);
   if (msg->dlc < message->GetDlc())
     return;
   message->SetFrame(msg);
@@ -551,7 +551,7 @@ void RaptorDbwCAN::recvDOPtRptPart3(const Frame::SharedPtr msg)
 
 void RaptorDbwCAN::recvWheelStrainGaugeRpt(const Frame::SharedPtr msg)
 {
-  NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(ID_WHEEL_STRAIN_GAUGE);
+  NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(MessageID::WHEEL_STRAIN_GAUGE);
   if (msg->dlc < message->GetDlc())
     return;
   message->SetFrame(msg); 
@@ -563,7 +563,7 @@ void RaptorDbwCAN::recvWheelStrainGaugeRpt(const Frame::SharedPtr msg)
 
 void RaptorDbwCAN::recvWheelPotentialmeterRpt(const Frame::SharedPtr msg)
 {
-  NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(ID_WHEEL_POTENTIOMETER_DATA);
+  NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(MessageID::WHEEL_POTENTIOMETER_DATA);
   if (msg->dlc < message->GetDlc())
     return;
   message->SetFrame(msg); 
@@ -669,17 +669,17 @@ void RaptorDbwCAN::timerPtCallback() {
 
 void RaptorDbwCAN::timerCallback()
 {
-  
+  // placeholder
 }
 
 void RaptorDbwCAN::enableSystem()
 {
-  
+  // placeholder
 }
 
 void RaptorDbwCAN::disableSystem()
 {
-  
+  // placeholder
 }
 
 void RaptorDbwCAN::publishJointStates(
