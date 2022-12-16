@@ -132,8 +132,8 @@ RaptorDbwCAN::RaptorDbwCAN(const rclcpp::NodeOptions & options)
   timer_pt_report_ = this->create_wall_timer(10ms,
     std::bind(&RaptorDbwCAN::timerPtCallback, this));
 
-  timer_ = this->create_wall_timer(
-    200ms, std::bind(&RaptorDbwCAN::timerCallback, this));
+  timer_ = this->create_wall_timer(100ms,
+    std::bind(&RaptorDbwCAN::timerMylapsCallback, this));
 }
 
 RaptorDbwCAN::~RaptorDbwCAN()
@@ -155,12 +155,12 @@ void RaptorDbwCAN::recvCAN(const can_msgs::msg::Frame::SharedPtr msg)
   const uint8_t part4 = 4;
 
   switch (static_cast<MessageID>(msg->id)) {
-    case MessageID::BASE_TO_CAR_TIMING:
-      recvDOLapTimeRpt(msg);
-      break;
-
     case MessageID::BASE_TO_CAR_SUMMARY:
       recvDORcToCtRpt(msg);
+      break;
+
+    case MessageID::BASE_TO_CAR_TIMING:
+      recvDOLapTimeRpt(msg);
       break;
 
     case MessageID::WHEEL_SPEED_REPORT:
@@ -179,48 +179,20 @@ void RaptorDbwCAN::recvCAN(const can_msgs::msg::Frame::SharedPtr msg)
       recvSteeringRpt(msg);
       break;
 
-    case MessageID::STEERING_REPORT_EXTD:
-      recvSteeringExtdRpt(msg);
-      break;
-
     case MessageID::MISC_REPORT:
       recvDOMiscRpt(msg);
       break;
 
-    case MessageID::DIAGNOSTIC_REPORT:
-      recvDODiagRpt(msg);
+    case MessageID::WHEEL_STRAIN_GAUGE:
+      recvWheelStrainGaugeRpt(msg);
+      break; 
+
+    case MessageID::WHEEL_POTENTIOMETER_DATA:
+      recvWheelPotentialmeterRpt(msg);
       break;
 
-    /* FIXME: not used in candbc file. conflict with ID_BASE_TO_CAR_SUMMARY
-    case ID_RC_TO_CT:
-      {
-        NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(ID_RC_TO_CT);
-        if (msg->dlc >= message->GetDlc()) {
-
-          message->SetFrame(msg);
-
-          deep_orange_msgs::msg::RcToCt out;
-          out.stamp = msg->header.stamp;
-          // out.current_position  = message->GetSignal("DBW_CurrentPosition")->GetResult();
-          out.track_flag = message->GetSignal("track_cond")->GetResult(); 
-          // TODO: adding statements for arrays of black checkered purple flags trackpositions
-          out.rolling_counter = message->GetSignal("rc_rolling_counter")->GetResult();
-          pub_rc_to_ct_->publish(out);
-        }
-      }
-      break;
-    */
-
-    case MessageID::PT_REPORT_1:
-      recvDOPtRptPart1(msg);
-      break;
-
-    case MessageID::PT_REPORT_2:
-      recvDOPtRptPart2(msg);
-      break;
-
-    case MessageID::PT_REPORT_3:
-      recvDOPtRptPart3(msg);
+    case MessageID::STEERING_REPORT_EXTD:
+      recvSteeringExtdRpt(msg);
       break;
 
     case MessageID::TIRE_PRESSURE_FL:
@@ -302,13 +274,21 @@ void RaptorDbwCAN::recvCAN(const can_msgs::msg::Frame::SharedPtr msg)
     case MessageID::TIRE_TEMP_RR_4:
       recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), rr, part4);
       break;
-    
-    case MessageID::WHEEL_STRAIN_GAUGE:
-      recvWheelStrainGaugeRpt(msg);
-      break; 
 
-    case MessageID::WHEEL_POTENTIOMETER_DATA:
-      recvWheelPotentialmeterRpt(msg);
+    case MessageID::PT_REPORT_1:
+      recvDOPtRptPart1(msg);
+      break;
+
+    case MessageID::PT_REPORT_2:
+      recvDOPtRptPart2(msg);
+      break;
+
+    case MessageID::DIAGNOSTIC_REPORT:
+      recvDODiagRpt(msg);
+      break;
+
+    case MessageID::PT_REPORT_3:
+      recvDOPtRptPart3(msg);
       break;
 
     default:
@@ -559,6 +539,7 @@ void RaptorDbwCAN::recvDOPtRptPart3(const Frame::SharedPtr msg)
     return;
   message->SetFrame(msg);
   pt_report_msg.engine_oil_temperature = message->GetSignal("engine_oil_temperature")->GetResult();
+  pt_report_msg.wheel_torque_total = message->GetSignal("torque_wheels")->GetResult();
 }
 
 void RaptorDbwCAN::recvWheelStrainGaugeRpt(const Frame::SharedPtr msg)
@@ -586,6 +567,29 @@ void RaptorDbwCAN::recvWheelPotentialmeterRpt(const Frame::SharedPtr msg)
   tire_report_msg.fr_damper_linear_potentiometer = message->GetSignal("wheel_potentiometer_FR")->GetResult();
   tire_report_msg.rl_damper_linear_potentiometer = message->GetSignal("wheel_potentiometer_RL")->GetResult();
   tire_report_msg.rr_damper_linear_potentiometer = message->GetSignal("wheel_potentiometer_RR")->GetResult();
+}
+
+void RaptorDbwCAN::recvMyLapsRptPart1(const Frame::SharedPtr msg)
+{
+  NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(
+    static_cast<uint32_t>(MessageID::MYLAPS_REPORT_1));
+  if (msg->dlc < message->GetDlc())
+    return;
+  message->SetFrame(msg);
+  mylaps_report_msg.stamp = msg->header.stamp;
+  mylaps_report_msg.speed = message->GetSignal("mylaps_speed")->GetResult();
+  mylaps_report_msg.heading = message->GetSignal("mylaps_heading")->GetResult();
+}
+
+void RaptorDbwCAN::recvMyLapsRptPart2(const Frame::SharedPtr msg)
+{
+  NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(
+    static_cast<uint32_t>(MessageID::MYLAPS_REPORT_2));
+  if (msg->dlc < message->GetDlc())
+    return;
+  message->SetFrame(msg);
+  mylaps_report_msg.latitude = message->GetSignal("Latitude")->GetResult();
+  mylaps_report_msg.longitude = message->GetSignal("Longitude")->GetResult();
 }
 
 void RaptorDbwCAN::recvEnable(const Empty::SharedPtr msg)
@@ -667,7 +671,7 @@ void RaptorDbwCAN::recvCtCmd(const deep_orange_msgs::msg::CtReport::SharedPtr ms
   message->GetSignal("veh_sig_ack")->SetResult(msg->veh_sig_ack);
   message->GetSignal("ct_state")->SetResult(msg->ct_state);
   message->GetSignal("ct_state_rolling_counter")->SetResult(msg->rolling_counter);
-
+  message->GetSignal("veh_num")->SetResult(msg->veh_num);
   can_msgs::msg::Frame frame = message->GetFrame();
 
   pub_can_->publish(frame);
@@ -681,9 +685,9 @@ void RaptorDbwCAN::timerPtCallback() {
     pub_pt_report_->publish(pt_report_msg);
 }
 
-void RaptorDbwCAN::timerCallback()
+void RaptorDbwCAN::timerMylapsCallback()
 {
-  // placeholder
+    pub_mylaps_report_->publish(mylaps_report_msg);
 }
 
 void RaptorDbwCAN::enableSystem()

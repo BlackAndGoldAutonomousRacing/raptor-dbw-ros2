@@ -188,10 +188,10 @@ BO_ 1400 brake_pressure_cmd: 8 Vector__XXX
  SG_ brake_pressure_cmd : 0|13@1+ (1,0) [0|8191] "" Vector__XXX
 
 BO_ 1311 wheel_potentiometer_data: 8 Vector__XXX
- SG_ wheel_potentiometer_RR : 24|8@1+ (0.2,0) [0|510] "" Vector__XXX
- SG_ wheel_potentiometer_RL : 16|8@1+ (0.2,0) [0|510] "" Vector__XXX
- SG_ wheel_potentiometer_FR : 8|8@1+ (0.2,0) [0|510] "" Vector__XXX
- SG_ wheel_potentiometer_FL : 0|8@1+ (0.2,0) [0|510] "" Vector__XXX
+ SG_ wheel_potentiometer_RR : 32|16@1+ (0.01,0) [0|0] "" Vector__XXX
+ SG_ wheel_potentiometer_RL : 48|16@1+ (0.01,0) [0|0] "" Vector__XXX
+ SG_ wheel_potentiometer_FR : 16|16@1+ (0.01,0) [0|0] "" Vector__XXX
+ SG_ wheel_potentiometer_FL : 0|16@1+ (0.01,0) [0|0] "" Vector__XXX
 
 BO_ 1310 wheel_strain_gauge: 8 Vector__XXX
  SG_ wheel_strain_gauge_RR : 48|12@1+ (10,0) [0|8190] "" Vector__XXX
@@ -267,6 +267,7 @@ BO_ 1200 base_to_car_summary: 8 Vector__XXX
  SG_ veh_rank : 12|4@1+ (1,0) [0|0] "" Vector__XXX
  SG_ lap_count : 24|8@1+ (1,0) [0|0] "" Vector__XXX
  SG_ lap_distance : 32|16@1+ (1,0) [0|0] "m" Vector__XXX
+ SG_ round_target_speed : 16|8@1+ (1,0) [0|0] "mph" Vector__XXX
 
 BO_ 1208 base_to_car_timing: 8 Vector__XXX
  SG_ laps : 0|8@1+ (1,0) [0|0] "" Vector__XXX
@@ -283,6 +284,15 @@ BO_ 1209 rest_of_field: 8 Vector__XXX
 
 BO_ 1343 pt_report_3: 8 Vector__XXX
  SG_ engine_oil_temperature : 0|8@1+ (1,0) [0|0] "degC" Vector__XXX
+ SG_ torque_wheels : 8|16@1- (0.1,0) [0|0] "Nm" Vector__XXX
+
+BO_ 228 mylaps_report_1: 8 Vector__XXX
+ SG_ mylaps_speed : 0|16@1+ (1,0) [0|0] "kmph" Vector__XXX
+ SG_ mylaps_heading : 16|16@1- (1,0) [0|0] "degrees" Vector__XXX
+
+BO_ 226 mylaps_report_2: 8 Vector__XXX
+ SG_ Latitude : 0|32@1- (1e-07,0) [0|0] "" Vector__XXX
+ SG_ Longitude : 32|32@1- (1e-07,0) [0|0] "" Vector__XXX
 
 
 
@@ -398,6 +408,10 @@ CM_ SG_ 1342 adlink_hb_lost "0--HB okay;
 CM_ SG_ 1342 rc_lost "0--HB okay;
 1--HbFail;
 ";
+CM_ SG_ 1343 torque_wheels "Multiplied by active gear ratio
+";
+CM_ BO_ 228 "Speed and heading data coming off of MyLaps racelink unit. Currently at 200 ms but WIP to bump up the update rate. This is for future improvement of purple flag behaviour by providing a redundant source of speed. ";
+CM_ BO_ 226 "GPS data from MyLaps racelink unit. Currently at 200 ms but WIP to bump up the update rate.  ";
 BA_DEF_  "BusType" STRING ;
 BA_DEF_DEF_  "BusType" "CAN";
 

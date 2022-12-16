@@ -86,6 +86,7 @@
 #include <deep_orange_msgs/msg/coordinates.hpp>
 #include <deep_orange_msgs/msg/pt_report.hpp>
 #include <deep_orange_msgs/msg/tire_report.hpp>
+#include <deep_orange_msgs/msg/mylaps_report.hpp>
 
 // temp stuff
 #include <autoware_auto_planning_msgs/msg/trajectory_point.hpp>
@@ -133,6 +134,7 @@ using deep_orange_msgs::msg::TireReport;
 using deep_orange_msgs::msg::PtReport;
 using deep_orange_msgs::msg::DiagnosticReport;
 using deep_orange_msgs::msg::LapTimeReport;
+using deep_orange_msgs::msg::MylapsReport;
 
 namespace raptor_dbw_can
 {
@@ -155,9 +157,9 @@ private:
  */
   void timerPtCallback();
 
-/** \brief Placeholder for watchdog.
+/** \brief timer callback for publishing mylaps report at 10Hz.
  */
-  void timerCallback();
+  void timerMylapsCallback();
 
 /** \brief Attempt to enable the DBW system.
  * \param[in] msg Enable message (must not be null)
@@ -258,6 +260,13 @@ private:
  */
   void recvWheelPotentialmeterRpt(const Frame::SharedPtr msg);
 
+/**
+ * \brief Convert a MyLaps Report received over CAN into a ROS message.
+ * \param[in] msg The message received over CAN.
+ */
+  void recvMyLapsRptPart1(const Frame::SharedPtr msg);
+  void recvMyLapsRptPart2(const Frame::SharedPtr msg);
+
 /** \brief Convert an Accelerator Pedal Command sent as a ROS message into a CAN message.
  * \param[in] msg The message to send over CAN.
  */
@@ -333,6 +342,7 @@ private:
 
   deep_orange_msgs::msg::PtReport pt_report_msg;
   deep_orange_msgs::msg::TireReport tire_report_msg;
+  deep_orange_msgs::msg::MylapsReport mylaps_report_msg;
  
   // Subscribed topics
   rclcpp::Subscription<Frame>::SharedPtr sub_can_;
@@ -358,6 +368,7 @@ private:
   rclcpp::Publisher<RcToCt>::SharedPtr pub_rc_to_ct_;
   rclcpp::Publisher<TireReport>::SharedPtr pub_tire_report_;
   rclcpp::Publisher<PtReport>::SharedPtr pub_pt_report_;
+  rclcpp::Publisher<MylapsReport>::SharedPtr pub_mylaps_report_;
   rclcpp::Publisher<DiagnosticReport>::SharedPtr pub_diag_report_;
   rclcpp::Publisher<LapTimeReport>::SharedPtr pub_timing_report_;
 
