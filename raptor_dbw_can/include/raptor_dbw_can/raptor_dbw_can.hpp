@@ -286,7 +286,6 @@ private:
   
   void recvCtCmd(const deep_orange_msgs::msg::CtReport::SharedPtr msg);
 
-  rclcpp::TimerBase::SharedPtr timer_;
   rclcpp::Clock m_clock;
   static constexpr int64_t CLOCK_1_SEC = 1000;  // duration in milliseconds
 
@@ -337,6 +336,7 @@ private:
   double acker_track_;
   double steering_ratio_;
 
+  rclcpp::TimerBase::SharedPtr timer_mylaps_report_;
   rclcpp::TimerBase::SharedPtr timer_tire_report_;
   rclcpp::TimerBase::SharedPtr timer_pt_report_;
 

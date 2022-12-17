@@ -98,6 +98,8 @@ RaptorDbwCAN::RaptorDbwCAN(const rclcpp::NodeOptions & options)
     "diag_report", 10);
   pub_timing_report_ = this->create_publisher<LapTimeReport>(
     "lap_time_report", 10);
+  pub_mylaps_report_ = this->create_publisher<MylapsReport>(
+    "mylaps_report", 10);
 
   // Set up Subscribers
   sub_can_ = this->create_subscription<Frame>(
@@ -132,7 +134,7 @@ RaptorDbwCAN::RaptorDbwCAN(const rclcpp::NodeOptions & options)
   timer_pt_report_ = this->create_wall_timer(10ms,
     std::bind(&RaptorDbwCAN::timerPtCallback, this));
 
-  timer_ = this->create_wall_timer(100ms,
+  timer_mylaps_report_ = this->create_wall_timer(100ms,
     std::bind(&RaptorDbwCAN::timerMylapsCallback, this));
 }
 
@@ -426,7 +428,7 @@ void RaptorDbwCAN::recvTireTempRpt(const Frame::SharedPtr msg,
   // fill in the fields: part1: 0..3, etc., corresponds to dbc signals _01, _02, ..._16.
   // fill in which tire: FL, FR, ...
   for (int index = (part-1)*4; index < part*4; index ++){
-    snprintf(buf, 3, "%02d", index);
+    snprintf(buf, 3, "%02d", index+1);
     tire_report_msg.fl_tire_temperature[index] =
         message->GetSignal(which + "_Tire_Temp_" + std::string(buf))->GetResult();
   }
