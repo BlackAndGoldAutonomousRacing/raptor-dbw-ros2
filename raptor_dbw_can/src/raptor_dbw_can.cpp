@@ -117,7 +117,7 @@ RaptorDbwCAN::RaptorDbwCAN(const rclcpp::NodeOptions & options)
     "steering_cmd", 1,
     std::bind(&RaptorDbwCAN::recvSteeringCmd, this, std::placeholders::_1));
 
-  sub_gear_shift_cmd_ = this->create_subscription<UInt8>(
+  sub_gear_shift_cmd_ = this->create_subscription<Int8>(
     "gear_cmd", 10,
     std::bind(&RaptorDbwCAN::recvGearShiftCmd, this, std::placeholders::_1));
 
@@ -657,7 +657,7 @@ void RaptorDbwCAN::recvSteeringCmd(const SteeringCmd::SharedPtr msg)
   pub_can_->publish(frame);
 }
 
-void RaptorDbwCAN::recvGearShiftCmd(const std_msgs::msg::UInt8::SharedPtr msg) 
+void RaptorDbwCAN::recvGearShiftCmd(const std_msgs::msg::Int8::SharedPtr msg) 
 {
   NewEagle::DbcMessage* message = dbwDbc_.GetMessage("gear_shift_cmd");
   message->GetSignal("desired_gear")->SetResult(msg->data);

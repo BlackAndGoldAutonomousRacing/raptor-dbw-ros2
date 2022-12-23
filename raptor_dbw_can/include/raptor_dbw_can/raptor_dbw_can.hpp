@@ -73,7 +73,7 @@
 //#include <std_msgs/msg/bool.hpp>
 #include <std_msgs/msg/empty.hpp>
 //#include <std_msgs/msg/string.hpp>
-#include <std_msgs/msg/u_int8.hpp>                          // used for gear shift cmd.
+#include <std_msgs/msg/int8.hpp>                          // used for gear shift cmd.
 
 #include <deep_orange_msgs/msg/base_to_car_summary.hpp>
 #include <deep_orange_msgs/msg/diagnostic_report.hpp>
@@ -110,7 +110,7 @@ using can_msgs::msg::Frame;
 using geometry_msgs::msg::TwistStamped;
 using sensor_msgs::msg::JointState;
 using std_msgs::msg::Empty;
-using std_msgs::msg::UInt8;
+using std_msgs::msg::Int8;
 
 //using raptor_pdu_msgs::msg::RelayCommand;
 
@@ -282,7 +282,7 @@ private:
  */
   void recvSteeringCmd(const SteeringCmd::SharedPtr msg);
 
-  void recvGearShiftCmd(const UInt8::SharedPtr msg);
+  void recvGearShiftCmd(const Int8::SharedPtr msg);
   
   void recvCtCmd(const deep_orange_msgs::msg::CtReport::SharedPtr msg);
 
@@ -348,7 +348,7 @@ private:
   rclcpp::Subscription<Frame>::SharedPtr sub_can_;
   rclcpp::Subscription<AcceleratorPedalCmd>::SharedPtr sub_accelerator_pedal_;
   rclcpp::Subscription<BrakeCmd>::SharedPtr sub_brake_;
-  rclcpp::Subscription<UInt8>::SharedPtr sub_gear_shift_cmd_;
+  rclcpp::Subscription<Int8>::SharedPtr sub_gear_shift_cmd_;
   rclcpp::Subscription<SteeringCmd>::SharedPtr sub_steering_;
   rclcpp::Subscription<deep_orange_msgs::msg::CtReport>::SharedPtr sub_ct_report_;
 
