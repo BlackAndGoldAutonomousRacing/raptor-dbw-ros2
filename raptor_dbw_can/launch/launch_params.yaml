@@ -6,4 +6,8 @@
     bit_rate: 500000
     enable_echo: false
   # DBW CAN node
-    max_steer_angle: 470.0
+    # This is the hardware angle on the steering motor, not the wheels' physical angle.
+    # The received value is first clamped by this limit,
+    # then divided by the scaling factor specified in the DBC file,
+    # then sent out to Raptor.
+    max_steer_angle: 210.0

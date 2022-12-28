@@ -648,6 +648,9 @@ void RaptorDbwCAN::recvSteeringCmd(const SteeringCmd::SharedPtr msg)
         max_steer_angle_ * 1.0F, static_cast<float>(
           msg->angle_cmd * 1.0F)));
 
+  // scmd should be in the range of -maxAng, maxAng
+  // in the current dbc config (10-bit signed), maxAng is limited to 255.
+  // TODO: check -- use launch_params.yaml for this value.
   message->GetSignal("steering_motor_ang_cmd")->SetResult(scmd);
 
   message->GetSignal("steering_motor_cmd_counter")->SetResult(msg->rolling_counter);
