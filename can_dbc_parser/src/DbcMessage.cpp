@@ -131,9 +131,9 @@ Frame DbcMessage::GetFrame()
   return frame;
 }
 
-void DbcMessage::SetFrame(const Frame::SharedPtr msg)
+void DbcMessage::SetFrame(const Frame& msg)
 {
-  uint8_t * ptr = static_cast<uint8_t *>(msg->data._M_elems);
+  const uint8_t * ptr = static_cast<const uint8_t *>(msg.data._M_elems);
 
   if (!AnyMultiplexedSignals()) {
     for (std::map<std::string, NewEagle::DbcSignal>::iterator it = _signals.begin();

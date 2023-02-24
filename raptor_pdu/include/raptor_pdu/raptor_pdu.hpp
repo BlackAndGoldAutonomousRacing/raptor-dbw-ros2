@@ -94,7 +94,7 @@ private:
 /** \brief Convert reports received over CAN into ROS messages.
  * \param[in] msg The message received over CAN.
  */
-  void recvCAN(const Frame::SharedPtr msg);
+  void recvCAN(const Frame::UniquePtr msg);
 
 /** \brief Send out a Relay Command over CAN
  * \param[in] msg The RelayCommand received as a ROS message.

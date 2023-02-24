@@ -164,72 +164,72 @@ private:
 /** \brief Attempt to enable the DBW system.
  * \param[in] msg Enable message (must not be null)
  */
-  void recvEnable(const Empty::SharedPtr msg);
+  void recvEnable(const Empty::UniquePtr msg);
 
 /** \brief Attempt to disable the DBW system.
  * \param[in] msg Disable message (must not be null)
  */
-  void recvDisable(const Empty::SharedPtr msg);
+  void recvDisable(const Empty::UniquePtr msg);
 
 /** \brief Convert reports received over CAN into ROS messages.
  * \param[in] msg The message received over CAN.
  */
-  void recvCAN(const Frame::SharedPtr msg);
+  void recvCAN(const Frame::UniquePtr msg);
 
 /** \brief Convert an Accel Pedal Report received over CAN into a ROS message.
  * \param[in] msg The message received over CAN.
  */
-  void recvAccelPedalRpt(const Frame::SharedPtr msg);
+  void recvAccelPedalRpt(const Frame& msg);
 
 /** \brief Convert a Brake2 Report received over CAN into a ROS message.
  * \param[in] msg The message received over CAN.
  */
-  void recvBrake2Rpt(const Frame::SharedPtr msg);
+  void recvBrake2Rpt(const Frame& msg);
 
 /** \brief Convert a Pit (Engine+Gear) Report received over CAN into a ROS message.
  * \param[in] msg The message received over CAN. The message is split into 3 parts.
  */
-  void recvDOPtRptPart1(const Frame::SharedPtr msg);
-  void recvDOPtRptPart2(const Frame::SharedPtr msg);
-  void recvDOPtRptPart3(const Frame::SharedPtr msg);
+  void recvDOPtRptPart1(const Frame& msg);
+  void recvDOPtRptPart2(const Frame& msg);
+  void recvDOPtRptPart3(const Frame& msg);
 
 /** \brief Convert a Diagnostic Report received over CAN into a ROS message.
  * \param[in] msg The message received over CAN.
  */
-  void recvDODiagRpt(const Frame::SharedPtr msg);
+  void recvDODiagRpt(const Frame& msg);
 
 /** \brief Convert a Misc. Report received over CAN into a ROS message.
  * \param[in] msg The message received over CAN.
  */
-  void recvDOMiscRpt(const Frame::SharedPtr msg);
+  void recvDOMiscRpt(const Frame& msg);
 
 /** \brief Convert a Race Control to Team Computer Report received over CAN
  * into a ROS message.
  * \param[in] msg The message received over CAN.
  */
-  void recvDORcToCtRpt(const Frame::SharedPtr msg);
+  void recvDORcToCtRpt(const Frame& msg);
 
 /** \brief Convert a Lap Time Report received over CAN into a ROS message.
  * \param[in] msg The message received over CAN.
  */
-  void recvDOLapTimeRpt(const Frame::SharedPtr msg);
+  void recvDOLapTimeRpt(const Frame& msg);
 
 /** \brief Convert a Steering Report received over CAN into a ROS message.
  * \param[in] msg The message received over CAN.
  */
-  void recvSteeringRpt(const Frame::SharedPtr msg);
+  void recvSteeringRpt(const Frame& msg);
 
 /** \brief Convert a Steering2 Report received over CAN into a ROS message.
  * \param[in] msg The message received over CAN.
  */
-  void recvSteeringExtdRpt(const Frame::SharedPtr msg);
+  void recvSteeringExtdRpt(const Frame& msg);
 
 /** \brief Convert a Tire Pressure Report received over CAN into a ROS message.
  * \param[in] msg The message received over CAN.
  * \param[in] canid The CAN ID of the incoming message.
  * \param[in] which The prefix string indicating which wheel the message corresponds to.
  */
-  void recvTirePressureRpt(const Frame::SharedPtr msg,
+  void recvTirePressureRpt(const Frame& msg,
                           const unsigned int & canid,
                           const std::string & which);
 
@@ -240,7 +240,7 @@ private:
  * \param[in] part The message is split into four (4) parts.
  * This value is in the range of 1..4.
  */
-  void recvTireTempRpt(const Frame::SharedPtr msg,
+  void recvTireTempRpt(const Frame& msg,
                       const unsigned int & canid,
                       const std::string & which,
                       const uint8_t & part);
@@ -248,43 +248,43 @@ private:
 /** \brief Convert a Wheel Speed Report received over CAN into a ROS message.
  * \param[in] msg The message received over CAN.
  */
-  void recvWheelSpeedRpt(const Frame::SharedPtr msg);
+  void recvWheelSpeedRpt(const Frame& msg);
 
 /** \brief Convert a Wheel Strain Gauge Report received over CAN into a ROS message.
  * \param[in] msg The message received over CAN.
  */
-  void recvWheelStrainGaugeRpt(const Frame::SharedPtr msg);
+  void recvWheelStrainGaugeRpt(const Frame& msg);
 
 /** \brief Convert a Wheel Potentialmeter Report received over CAN into a ROS message.
  * \param[in] msg The message received over CAN.
  */
-  void recvWheelPotentialmeterRpt(const Frame::SharedPtr msg);
+  void recvWheelPotentialmeterRpt(const Frame& msg);
 
 /**
  * \brief Convert a MyLaps Report received over CAN into a ROS message.
  * \param[in] msg The message received over CAN.
  */
-  void recvMyLapsRptPart1(const Frame::SharedPtr msg);
-  void recvMyLapsRptPart2(const Frame::SharedPtr msg);
+  void recvMyLapsRptPart1(const Frame& msg);
+  void recvMyLapsRptPart2(const Frame& msg);
 
 /** \brief Convert an Accelerator Pedal Command sent as a ROS message into a CAN message.
  * \param[in] msg The message to send over CAN.
  */
-  void recvAcceleratorPedalCmd(const AcceleratorPedalCmd::SharedPtr msg);
+  void recvAcceleratorPedalCmd(const AcceleratorPedalCmd::UniquePtr msg);
 
 /** \brief Convert a Brake Command sent as a ROS message into a CAN message.
  * \param[in] msg The message to send over CAN.
  */
-  void recvBrakeCmd(const BrakeCmd::SharedPtr msg);
+  void recvBrakeCmd(const BrakeCmd::UniquePtr msg);
 
 /** \brief Convert a Steering Command sent as a ROS message into a CAN message.
  * \param[in] msg The message to send over CAN.
  */
-  void recvSteeringCmd(const SteeringCmd::SharedPtr msg);
+  void recvSteeringCmd(const SteeringCmd::UniquePtr msg);
 
-  void recvGearShiftCmd(const Int8::SharedPtr msg);
+  void recvGearShiftCmd(const Int8::UniquePtr msg);
   
-  void recvCtCmd(const deep_orange_msgs::msg::CtReport::SharedPtr msg);
+  void recvCtCmd(const deep_orange_msgs::msg::CtReport::UniquePtr msg);
 
   rclcpp::Clock m_clock;
   static constexpr int64_t CLOCK_1_SEC = 1000;  // duration in milliseconds

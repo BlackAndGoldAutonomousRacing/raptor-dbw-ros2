@@ -142,7 +142,7 @@ RaptorDbwCAN::~RaptorDbwCAN()
 {
 }
 
-void RaptorDbwCAN::recvCAN(const can_msgs::msg::Frame::SharedPtr msg)
+void RaptorDbwCAN::recvCAN(const can_msgs::msg::Frame::UniquePtr msg)
 {
   if (msg->is_rtr || msg->is_error)
     return;
@@ -158,139 +158,139 @@ void RaptorDbwCAN::recvCAN(const can_msgs::msg::Frame::SharedPtr msg)
 
   switch (static_cast<MessageID>(msg->id)) {
     case MessageID::BASE_TO_CAR_SUMMARY:
-      recvDORcToCtRpt(msg);
+      recvDORcToCtRpt(*msg);
       break;
 
     case MessageID::BASE_TO_CAR_TIMING:
-      recvDOLapTimeRpt(msg);
+      recvDOLapTimeRpt(*msg);
       break;
 
     case MessageID::WHEEL_SPEED_REPORT:
-      recvWheelSpeedRpt(msg);
+      recvWheelSpeedRpt(*msg);
       break;
 
     case MessageID::BRAKE_PRESSURE_REPORT:
-      recvBrake2Rpt(msg);
+      recvBrake2Rpt(*msg);
       break;
 
     case MessageID::ACCELERATOR_REPORT:
-      recvAccelPedalRpt(msg);
+      recvAccelPedalRpt(*msg);
       break;
 
     case MessageID::STEERING_REPORT:
-      recvSteeringRpt(msg);
+      recvSteeringRpt(*msg);
       break;
 
     case MessageID::MISC_REPORT:
-      recvDOMiscRpt(msg);
+      recvDOMiscRpt(*msg);
       break;
 
     case MessageID::WHEEL_STRAIN_GAUGE:
-      recvWheelStrainGaugeRpt(msg);
+      recvWheelStrainGaugeRpt(*msg);
       break; 
 
     case MessageID::WHEEL_POTENTIOMETER_DATA:
-      recvWheelPotentialmeterRpt(msg);
+      recvWheelPotentialmeterRpt(*msg);
       break;
 
     case MessageID::STEERING_REPORT_EXTD:
-      recvSteeringExtdRpt(msg);
+      recvSteeringExtdRpt(*msg);
       break;
 
     case MessageID::TIRE_PRESSURE_FL:
-      recvTirePressureRpt(msg, static_cast<unsigned int>(msg->id), fl);
+      recvTirePressureRpt(*msg, static_cast<unsigned int>(msg->id), fl);
       break;
 
     case MessageID::TIRE_PRESSURE_FR:
-      recvTirePressureRpt(msg, static_cast<unsigned int>(msg->id), fr);
+      recvTirePressureRpt(*msg, static_cast<unsigned int>(msg->id), fr);
       break;
 
     case MessageID::TIRE_PRESSURE_RL:
-      recvTirePressureRpt(msg, static_cast<unsigned int>(msg->id), rl);
+      recvTirePressureRpt(*msg, static_cast<unsigned int>(msg->id), rl);
       break;
     
     case MessageID::TIRE_PRESSURE_RR:
-      recvTirePressureRpt(msg, static_cast<unsigned int>(msg->id), rr);
+      recvTirePressureRpt(*msg, static_cast<unsigned int>(msg->id), rr);
       break;
 
     case MessageID::TIRE_TEMP_FL_1:
-      recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), fl, part1);
+      recvTireTempRpt(*msg, static_cast<unsigned int>(msg->id), fl, part1);
       break;
 
     case MessageID::TIRE_TEMP_FL_2:
-      recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), fl, part2);
+      recvTireTempRpt(*msg, static_cast<unsigned int>(msg->id), fl, part2);
       break;
 
     case MessageID::TIRE_TEMP_FL_3:
-      recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), fl, part3);
+      recvTireTempRpt(*msg, static_cast<unsigned int>(msg->id), fl, part3);
       break;
 
     case MessageID::TIRE_TEMP_FL_4:
-      recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), fl, part4);
+      recvTireTempRpt(*msg, static_cast<unsigned int>(msg->id), fl, part4);
       break;
 
     case MessageID::TIRE_TEMP_FR_1:
-      recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), fr, part1);
+      recvTireTempRpt(*msg, static_cast<unsigned int>(msg->id), fr, part1);
       break;
 
     case MessageID::TIRE_TEMP_FR_2:
-      recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), fr, part2);
+      recvTireTempRpt(*msg, static_cast<unsigned int>(msg->id), fr, part2);
       break;
 
     case MessageID::TIRE_TEMP_FR_3:
-      recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), fr, part3);
+      recvTireTempRpt(*msg, static_cast<unsigned int>(msg->id), fr, part3);
       break;
 
     case MessageID::TIRE_TEMP_FR_4:
-      recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), fr, part4);
+      recvTireTempRpt(*msg, static_cast<unsigned int>(msg->id), fr, part4);
       break;
 
     case MessageID::TIRE_TEMP_RL_1:
-      recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), rl, part1);
+      recvTireTempRpt(*msg, static_cast<unsigned int>(msg->id), rl, part1);
       break;
 
     case MessageID::TIRE_TEMP_RL_2:
-      recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), rl, part2);
+      recvTireTempRpt(*msg, static_cast<unsigned int>(msg->id), rl, part2);
       break;
 
     case MessageID::TIRE_TEMP_RL_3:
-      recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), rl, part3);
+      recvTireTempRpt(*msg, static_cast<unsigned int>(msg->id), rl, part3);
       break;
 
     case MessageID::TIRE_TEMP_RL_4:
-      recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), rl, part4);
+      recvTireTempRpt(*msg, static_cast<unsigned int>(msg->id), rl, part4);
       break;
 
     case MessageID::TIRE_TEMP_RR_1:
-      recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), rr, part1);
+      recvTireTempRpt(*msg, static_cast<unsigned int>(msg->id), rr, part1);
       break;
 
     case MessageID::TIRE_TEMP_RR_2:
-      recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), rr, part2);
+      recvTireTempRpt(*msg, static_cast<unsigned int>(msg->id), rr, part2);
       break;
 
     case MessageID::TIRE_TEMP_RR_3:
-      recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), rr, part3);
+      recvTireTempRpt(*msg, static_cast<unsigned int>(msg->id), rr, part3);
       break;
 
     case MessageID::TIRE_TEMP_RR_4:
-      recvTireTempRpt(msg, static_cast<unsigned int>(msg->id), rr, part4);
+      recvTireTempRpt(*msg, static_cast<unsigned int>(msg->id), rr, part4);
       break;
 
     case MessageID::PT_REPORT_1:
-      recvDOPtRptPart1(msg);
+      recvDOPtRptPart1(*msg);
       break;
 
     case MessageID::PT_REPORT_2:
-      recvDOPtRptPart2(msg);
+      recvDOPtRptPart2(*msg);
       break;
 
     case MessageID::DIAGNOSTIC_REPORT:
-      recvDODiagRpt(msg);
+      recvDODiagRpt(*msg);
       break;
 
     case MessageID::PT_REPORT_3:
-      recvDOPtRptPart3(msg);
+      recvDOPtRptPart3(*msg);
       break;
 
     default:
@@ -298,82 +298,82 @@ void RaptorDbwCAN::recvCAN(const can_msgs::msg::Frame::SharedPtr msg)
   }
 }
 
-void RaptorDbwCAN::recvAccelPedalRpt(const Frame::SharedPtr msg)
+void RaptorDbwCAN::recvAccelPedalRpt(const Frame& msg)
 {
   NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(
     static_cast<uint32_t>(MessageID::ACCELERATOR_REPORT));
-  if (msg->dlc < message->GetDlc())
+  if (msg.dlc < message->GetDlc())
     return;
 
   message->SetFrame(msg);
 
   auto out = std::make_unique<AcceleratorPedalReport>();
-  out->header.stamp = msg->header.stamp;
+  out->header.stamp = msg.header.stamp;
   out->pedal_output  = message->GetSignal("acc_pedal_fdbk")->GetResult();
   out->rolling_counter = message->GetSignal("acc_pedal_fdbk_counter")->GetResult(); 
   pub_accel_pedal_->publish(std::move(out));
 }
 
-void RaptorDbwCAN::recvSteeringRpt(const Frame::SharedPtr msg)
+void RaptorDbwCAN::recvSteeringRpt(const Frame& msg)
 {
   NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(
     static_cast<uint32_t>(MessageID::STEERING_REPORT));
-  if (msg->dlc < message->GetDlc())
+  if (msg.dlc < message->GetDlc())
     return;
 
   message->SetFrame(msg);
   
   SteeringReport out;
-  out.header.stamp = msg->header.stamp;
+  out.header.stamp = msg.header.stamp;
   out.steering_wheel_angle  = message->GetSignal("steering_motor_ang_avg_fdbk")->GetResult();
   out.rolling_counter = message->GetSignal("steering_motor_fdbk_counter")->GetResult();
 
   pub_steering_->publish(out);
-  publishJointStates(msg->header.stamp, out);
+  publishJointStates(msg.header.stamp, out);
 }
 
-void RaptorDbwCAN::recvSteeringExtdRpt(const Frame::SharedPtr msg)
+void RaptorDbwCAN::recvSteeringExtdRpt(const Frame& msg)
 {
   NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(
     static_cast<uint32_t>(MessageID::STEERING_REPORT_EXTD));
-  if (msg->dlc < message->GetDlc())
+  if (msg.dlc < message->GetDlc())
     return;
 
   message->SetFrame(msg);
   auto out = std::make_unique<SteeringExtendedReport>();
-  out->header.stamp = msg->header.stamp;
+  out->header.stamp = msg.header.stamp;
   out->steering_motor_ang_1  = message->GetSignal("steering_motor_ang_1_fdbk")->GetResult();
   out->steering_motor_ang_2  = message->GetSignal("steering_motor_ang_2_fdbk")->GetResult();
   out->steering_motor_ang_3  = message->GetSignal("steering_motor_ang_3_fdbk")->GetResult();
   pub_steering_ext_->publish(std::move(out));
 }
 
-void RaptorDbwCAN::recvDOLapTimeRpt(const Frame::SharedPtr msg)
+void RaptorDbwCAN::recvDOLapTimeRpt(const Frame& msg)
 {
   NewEagle::DbcMessage * message = dbwDbc_.GetMessageById(
     static_cast<uint32_t>(MessageID::BASE_TO_CAR_TIMING));
-  if (msg->dlc < message->GetDlc())
+  if (msg.dlc < message->GetDlc())
     return;
   message->SetFrame(msg);
 
   auto out = std::make_unique<LapTimeReport>();
-  out->stamp = msg->header.stamp;
+  out->stamp = msg.header.stamp;
   out->laps = message->GetSignal("laps")->GetResult();
   out->lap_time = message->GetSignal("lap_time")->GetResult();
   out->time_stamp = message->GetSignal("time_stamp")->GetResult(); 
   pub_timing_report_->publish(std::move(out));
 }
 
-void RaptorDbwCAN::recvDORcToCtRpt(const Frame::SharedPtr msg)
+void RaptorDbwCAN::recvDORcToCtRpt(const Frame& msg)
 {
   NewEagle::DbcMessage * message = dbwDbc_.GetMessageById(
     static_cast<uint32_t>(MessageID::BASE_TO_CAR_SUMMARY));
-  if (msg->dlc < message->GetDlc())
+  if (msg.dlc < message->GetDlc())
     return;
   message->SetFrame(msg);
 
   auto out = std::make_unique<RcToCt>();
-  out->stamp = msg->header.stamp;
+  out->stamp = msg.header.stamp;
   out->rolling_counter = message->GetSignal("base_to_car_heartbeat")->GetResult();
   out->track_flag = message->GetSignal("track_flag")->GetResult();
   out->veh_flag = message->GetSignal("veh_flag")->GetResult(); 
@@ -383,31 +383,32 @@ void RaptorDbwCAN::recvDORcToCtRpt(const Frame::SharedPtr msg)
   pub_rc_to_ct_->publish(std::move(out));
 }
 
-void RaptorDbwCAN::recvWheelSpeedRpt(const Frame::SharedPtr msg)
+void RaptorDbwCAN::recvWheelSpeedRpt(const Frame& msg)
 {
   NewEagle::DbcMessage * message = dbwDbc_.GetMessageById(
     static_cast<uint32_t>(MessageID::WHEEL_SPEED_REPORT));
 
-  if (msg->dlc < message->GetDlc())
+  if (msg.dlc < message->GetDlc())
     return;
+  message->SetFrame(msg);
 
   WheelSpeedReport out;
-  out.header.stamp = msg->header.stamp;
+  out.header.stamp = msg.header.stamp;
   out.front_left  = message->GetSignal("wheel_speed_FL")->GetResult();
   out.front_right = message->GetSignal("wheel_speed_FR")->GetResult();
   out.rear_left = message->GetSignal("wheel_speed_RL")->GetResult();
   out.rear_right = message->GetSignal("wheel_speed_RR")->GetResult();
 
   pub_wheel_speeds_->publish(out);
-  publishJointStates(msg->header.stamp, out);
+  publishJointStates(msg.header.stamp, out);
 }
 
-void RaptorDbwCAN::recvTirePressureRpt(const Frame::SharedPtr msg,
+void RaptorDbwCAN::recvTirePressureRpt(const Frame& msg,
                                   const unsigned int & canid,
                                   const std::string & which)
 {
   NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(canid);
-  if (msg->dlc < message->GetDlc())
+  if (msg.dlc < message->GetDlc())
     return;
   message->SetFrame(msg);
   // fill in which tire: FL, FR, ...
@@ -416,13 +417,13 @@ void RaptorDbwCAN::recvTirePressureRpt(const Frame::SharedPtr msg,
     message->GetSignal(which+"_Tire_Pressure_Gauge")->GetResult();
 }
 
-void RaptorDbwCAN::recvTireTempRpt(const Frame::SharedPtr msg,
+void RaptorDbwCAN::recvTireTempRpt(const Frame& msg,
                               const unsigned int & canid,
                               const std::string & which,
                               const uint8_t & part)
 {
   NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(canid);
-  if (msg->dlc < message->GetDlc())
+  if (msg.dlc < message->GetDlc())
     return;
   message->SetFrame(msg);
   char buf[3];
@@ -435,16 +436,17 @@ void RaptorDbwCAN::recvTireTempRpt(const Frame::SharedPtr msg,
   }
 }
 
-void RaptorDbwCAN::recvBrake2Rpt(const Frame::SharedPtr msg)
+void RaptorDbwCAN::recvBrake2Rpt(const Frame& msg)
 {
   NewEagle::DbcMessage * message = dbwDbc_.GetMessageById(
     static_cast<uint32_t>(MessageID::BRAKE_PRESSURE_REPORT));
 
-  if (msg->dlc < message->GetDlc())
+  if (msg.dlc < message->GetDlc())
     return;
+  message->SetFrame(msg);
 
   auto out = std::make_unique<Brake2Report>();
-  out->header.stamp = msg->header.stamp;
+  out->header.stamp = msg.header.stamp;
   out->front_brake_pressure = message->GetSignal(
     "brake_pressure_fdbk_front")->GetResult();
   out->rear_brake_pressure  = message->GetSignal(
@@ -455,17 +457,17 @@ void RaptorDbwCAN::recvBrake2Rpt(const Frame::SharedPtr msg)
   pub_brake_2_report_->publish(std::move(out));
 }
 
-void RaptorDbwCAN::recvDOMiscRpt(const Frame::SharedPtr msg)
+void RaptorDbwCAN::recvDOMiscRpt(const Frame& msg)
 {
   NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(
     static_cast<uint32_t>(MessageID::MISC_REPORT));
-  if (msg->dlc < message->GetDlc())
+  if (msg.dlc < message->GetDlc())
     return;
 
   message->SetFrame(msg);
 
   auto out = std::make_unique<MiscReport>();
-  out->stamp = msg->header.stamp;
+  out->stamp = msg.header.stamp;
   out->sys_state = message->GetSignal("sys_state")->GetResult(); 
   out->safety_switch_state = message->GetSignal("safety_switch_state")->GetResult(); 
   out->mode_switch_state = message->GetSignal("mode_switch_state")->GetResult();
@@ -473,17 +475,17 @@ void RaptorDbwCAN::recvDOMiscRpt(const Frame::SharedPtr msg)
   pub_misc_do_->publish(std::move(out));
 }
 
-void RaptorDbwCAN::recvDODiagRpt(const Frame::SharedPtr msg)
+void RaptorDbwCAN::recvDODiagRpt(const Frame& msg)
 {
   NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(
     static_cast<uint32_t>(MessageID::DIAGNOSTIC_REPORT));
-  if (msg->dlc < message->GetDlc())
+  if (msg.dlc < message->GetDlc())
     return;
 
   message->SetFrame(msg);
 
   auto out = std::make_unique<DiagnosticReport>();
-  out->stamp = msg->header.stamp;
+  out->stamp = msg.header.stamp;
   out->sd_system_warning = message->GetSignal("sd_system_warning")->GetResult();
   out->sd_system_failure = message->GetSignal("sd_system_failure")->GetResult();
   out->motec_warning = message->GetSignal("motec_warning")->GetResult();
@@ -505,14 +507,14 @@ void RaptorDbwCAN::recvDODiagRpt(const Frame::SharedPtr msg)
   pub_diag_report_->publish(std::move(out));
 }
 
-void RaptorDbwCAN::recvDOPtRptPart1(const Frame::SharedPtr msg)
+void RaptorDbwCAN::recvDOPtRptPart1(const Frame& msg)
 {
   NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(
     static_cast<uint32_t>(MessageID::PT_REPORT_1));
-  if (msg->dlc < message->GetDlc())
+  if (msg.dlc < message->GetDlc())
     return;
   message->SetFrame(msg);
-  pt_report_msg.stamp = msg->header.stamp;
+  pt_report_msg.stamp = msg.header.stamp;
   pt_report_msg.throttle_position = message->GetSignal("throttle_position")->GetResult();
   pt_report_msg.engine_run_switch_status = message->GetSignal("engine_run_switch")->GetResult();
   pt_report_msg.current_gear = message->GetSignal("current_gear")->GetResult();
@@ -520,11 +522,11 @@ void RaptorDbwCAN::recvDOPtRptPart1(const Frame::SharedPtr msg)
   pt_report_msg.vehicle_speed_kmph = message->GetSignal("vehicle_speed_kmph")->GetResult();
 }
 
-void RaptorDbwCAN::recvDOPtRptPart2(const Frame::SharedPtr msg)
+void RaptorDbwCAN::recvDOPtRptPart2(const Frame& msg)
 {
   NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(
     static_cast<uint32_t>(MessageID::PT_REPORT_2));
-  if (msg->dlc < message->GetDlc())
+  if (msg.dlc < message->GetDlc())
     return;
   message->SetFrame(msg);
   pt_report_msg.fuel_pressure = message->GetSignal("fuel_pressure_kPa")->GetResult();
@@ -534,22 +536,22 @@ void RaptorDbwCAN::recvDOPtRptPart2(const Frame::SharedPtr msg)
   pt_report_msg.transmission_oil_pressure = message->GetSignal("transmission_pressure_kPa")->GetResult();
 }
 
-void RaptorDbwCAN::recvDOPtRptPart3(const Frame::SharedPtr msg)
+void RaptorDbwCAN::recvDOPtRptPart3(const Frame& msg)
 {
   NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(
     static_cast<uint32_t>(MessageID::PT_REPORT_3));
-  if (msg->dlc < message->GetDlc())
+  if (msg.dlc < message->GetDlc())
     return;
   message->SetFrame(msg);
   pt_report_msg.engine_oil_temperature = message->GetSignal("engine_oil_temperature")->GetResult();
   pt_report_msg.wheel_torque_total = message->GetSignal("torque_wheels")->GetResult();
 }
 
-void RaptorDbwCAN::recvWheelStrainGaugeRpt(const Frame::SharedPtr msg)
+void RaptorDbwCAN::recvWheelStrainGaugeRpt(const Frame& msg)
 {
   NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(
     static_cast<uint32_t>(MessageID::WHEEL_STRAIN_GAUGE));
-  if (msg->dlc < message->GetDlc())
+  if (msg.dlc < message->GetDlc())
     return;
   message->SetFrame(msg); 
   tire_report_msg.fl_wheel_load = message->GetSignal("wheel_strain_gauge_FL")->GetResult();
@@ -558,58 +560,58 @@ void RaptorDbwCAN::recvWheelStrainGaugeRpt(const Frame::SharedPtr msg)
   tire_report_msg.rr_wheel_load = message->GetSignal("wheel_strain_gauge_RR")->GetResult();
 }
 
-void RaptorDbwCAN::recvWheelPotentialmeterRpt(const Frame::SharedPtr msg)
+void RaptorDbwCAN::recvWheelPotentialmeterRpt(const Frame& msg)
 {
   NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(
     static_cast<uint32_t>(MessageID::WHEEL_POTENTIOMETER_DATA));
-  if (msg->dlc < message->GetDlc())
+  if (msg.dlc < message->GetDlc())
     return;
   message->SetFrame(msg); 
-  tire_report_msg.stamp = msg->header.stamp;
+  tire_report_msg.stamp = msg.header.stamp;
   tire_report_msg.fl_damper_linear_potentiometer = message->GetSignal("wheel_potentiometer_FL")->GetResult();
   tire_report_msg.fr_damper_linear_potentiometer = message->GetSignal("wheel_potentiometer_FR")->GetResult();
   tire_report_msg.rl_damper_linear_potentiometer = message->GetSignal("wheel_potentiometer_RL")->GetResult();
   tire_report_msg.rr_damper_linear_potentiometer = message->GetSignal("wheel_potentiometer_RR")->GetResult();
 }
 
-void RaptorDbwCAN::recvMyLapsRptPart1(const Frame::SharedPtr msg)
+void RaptorDbwCAN::recvMyLapsRptPart1(const Frame& msg)
 {
   NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(
     static_cast<uint32_t>(MessageID::MYLAPS_REPORT_1));
-  if (msg->dlc < message->GetDlc())
+  if (msg.dlc < message->GetDlc())
     return;
   message->SetFrame(msg);
-  mylaps_report_msg.stamp = msg->header.stamp;
+  mylaps_report_msg.stamp = msg.header.stamp;
   mylaps_report_msg.speed = message->GetSignal("mylaps_speed")->GetResult();
   mylaps_report_msg.heading = message->GetSignal("mylaps_heading")->GetResult();
 }
 
-void RaptorDbwCAN::recvMyLapsRptPart2(const Frame::SharedPtr msg)
+void RaptorDbwCAN::recvMyLapsRptPart2(const Frame& msg)
 {
   NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(
     static_cast<uint32_t>(MessageID::MYLAPS_REPORT_2));
-  if (msg->dlc < message->GetDlc())
+  if (msg.dlc < message->GetDlc())
     return;
   message->SetFrame(msg);
   mylaps_report_msg.latitude = message->GetSignal("Latitude")->GetResult();
   mylaps_report_msg.longitude = message->GetSignal("Longitude")->GetResult();
 }
 
-void RaptorDbwCAN::recvEnable(const Empty::SharedPtr msg)
+void RaptorDbwCAN::recvEnable(const Empty::UniquePtr msg)
 {
   if (msg == NULL)
     return;
   enableSystem();
 }
 
-void RaptorDbwCAN::recvDisable(const Empty::SharedPtr msg)
+void RaptorDbwCAN::recvDisable(const Empty::UniquePtr msg)
 {
   if (msg == NULL)
     return;
   disableSystem();
 }
 
-void RaptorDbwCAN::recvBrakeCmd(const BrakeCmd::SharedPtr msg)
+void RaptorDbwCAN::recvBrakeCmd(const BrakeCmd::UniquePtr msg)
 {
   NewEagle::DbcMessage * message = dbwDbc_.GetMessage("brake_pressure_cmd");
 
@@ -624,7 +626,7 @@ void RaptorDbwCAN::recvBrakeCmd(const BrakeCmd::SharedPtr msg)
 }
 
 void RaptorDbwCAN::recvAcceleratorPedalCmd(
-  const AcceleratorPedalCmd::SharedPtr msg)
+  const AcceleratorPedalCmd::UniquePtr msg)
 {
   NewEagle::DbcMessage * message = dbwDbc_.GetMessage("accelerator_cmd");
   
@@ -638,7 +640,7 @@ void RaptorDbwCAN::recvAcceleratorPedalCmd(
   pub_can_->publish(std::move(frame));
 }
 
-void RaptorDbwCAN::recvSteeringCmd(const SteeringCmd::SharedPtr msg)
+void RaptorDbwCAN::recvSteeringCmd(const SteeringCmd::UniquePtr msg)
 {
   NewEagle::DbcMessage * message = dbwDbc_.GetMessage("steering_cmd");
 
@@ -661,7 +663,7 @@ void RaptorDbwCAN::recvSteeringCmd(const SteeringCmd::SharedPtr msg)
   pub_can_->publish(std::move(frame));
 }
 
-void RaptorDbwCAN::recvGearShiftCmd(const std_msgs::msg::Int8::SharedPtr msg) 
+void RaptorDbwCAN::recvGearShiftCmd(const std_msgs::msg::Int8::UniquePtr msg) 
 {
   NewEagle::DbcMessage* message = dbwDbc_.GetMessage("gear_shift_cmd");
   message->GetSignal("desired_gear")->SetResult(msg->data);
@@ -669,9 +671,8 @@ void RaptorDbwCAN::recvGearShiftCmd(const std_msgs::msg::Int8::SharedPtr msg)
   pub_can_->publish(std::move(frame));
 }
 
-void RaptorDbwCAN::recvCtCmd(const deep_orange_msgs::msg::CtReport::SharedPtr msg) 
+void RaptorDbwCAN::recvCtCmd(const deep_orange_msgs::msg::CtReport::UniquePtr msg) 
 {
-
   NewEagle::DbcMessage* message = dbwDbc_.GetMessage("ct_report");
   message->GetSignal("track_cond_ack")->SetResult(msg->track_cond_ack); 
   message->GetSignal("veh_sig_ack")->SetResult(msg->veh_sig_ack);

@@ -58,7 +58,7 @@ static int32_t ConvertToMTBitOrdering(uint32_t bit)
   return ConvertToMTBitOrdering(bit, 8);
 }
 
-static double Unpack(uint8_t * data, const NewEagle::DbcSignal & signal)
+static double Unpack(const uint8_t * data, const NewEagle::DbcSignal & signal)
 {
   int32_t wordSize = sizeof(data);
   int32_t startBit = (int32_t)signal.GetStartBit();

@@ -63,7 +63,7 @@ raptor_pdu::raptor_pdu(const rclcpp::NodeOptions & options)
     "relay_cmd", 1, std::bind(&raptor_pdu::recvRelayCmd, this, std::placeholders::_1));
 }
 
-void raptor_pdu::recvCAN(const Frame::SharedPtr msg)
+void raptor_pdu::recvCAN(const Frame::UniquePtr msg)
 {
   if (!msg->is_rtr && !msg->is_error && msg->is_extended) {
     if (msg->id == relayStatusAddr_) {
@@ -72,7 +72,7 @@ void raptor_pdu::recvCAN(const Frame::SharedPtr msg)
         "Relay Status");
 
       NewEagle::DbcMessage * message = pduDbc_.GetMessage("RelayStatus");
-      message->SetFrame(msg);
+      message->SetFrame(*msg);
 
       RelayReport out;
 
@@ -92,7 +92,7 @@ void raptor_pdu::recvCAN(const Frame::SharedPtr msg)
         "Fuse Status");
 
       NewEagle::DbcMessage * message = pduDbc_.GetMessage("FuseStatus");
-      message->SetFrame(msg);
+      message->SetFrame(*msg);
 
       FuseReport out;
 
