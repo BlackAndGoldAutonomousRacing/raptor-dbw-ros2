@@ -320,7 +320,7 @@ private:
  */
   void publishJointStates(
     const rclcpp::Time stamp,
-    const SteeringReport steering);
+    const SteeringReport& steering);
 
 /** \brief Calculates & publishes joint states based on updated wheel speed report.
  *    Overloaded function.
@@ -329,7 +329,7 @@ private:
  */
   void publishJointStates(
     const rclcpp::Time stamp,
-    const WheelSpeedReport wheels);
+    const WheelSpeedReport& wheels);
 
   // Ackermann steering
   double acker_wheelbase_;

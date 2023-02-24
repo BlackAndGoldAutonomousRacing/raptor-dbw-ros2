@@ -307,11 +307,11 @@ void RaptorDbwCAN::recvAccelPedalRpt(const Frame::SharedPtr msg)
 
   message->SetFrame(msg);
 
-  AcceleratorPedalReport out;
-  out.header.stamp = msg->header.stamp;
-  out.pedal_output  = message->GetSignal("acc_pedal_fdbk")->GetResult();
-  out.rolling_counter = message->GetSignal("acc_pedal_fdbk_counter")->GetResult(); 
-  pub_accel_pedal_->publish(out);
+  auto out = std::make_unique<AcceleratorPedalReport>();
+  out->header.stamp = msg->header.stamp;
+  out->pedal_output  = message->GetSignal("acc_pedal_fdbk")->GetResult();
+  out->rolling_counter = message->GetSignal("acc_pedal_fdbk_counter")->GetResult(); 
+  pub_accel_pedal_->publish(std::move(out));
 }
 
 void RaptorDbwCAN::recvSteeringRpt(const Frame::SharedPtr msg)
@@ -326,7 +326,8 @@ void RaptorDbwCAN::recvSteeringRpt(const Frame::SharedPtr msg)
   SteeringReport out;
   out.header.stamp = msg->header.stamp;
   out.steering_wheel_angle  = message->GetSignal("steering_motor_ang_avg_fdbk")->GetResult();
-  out.rolling_counter = message->GetSignal("steering_motor_fdbk_counter")->GetResult(); 
+  out.rolling_counter = message->GetSignal("steering_motor_fdbk_counter")->GetResult();
+
   pub_steering_->publish(out);
   publishJointStates(msg->header.stamp, out);
 }
@@ -339,12 +340,12 @@ void RaptorDbwCAN::recvSteeringExtdRpt(const Frame::SharedPtr msg)
     return;
 
   message->SetFrame(msg);
-  SteeringExtendedReport out;
-  out.header.stamp = msg->header.stamp;
-  out.steering_motor_ang_1  = message->GetSignal("steering_motor_ang_1_fdbk")->GetResult();
-  out.steering_motor_ang_2  = message->GetSignal("steering_motor_ang_2_fdbk")->GetResult();
-  out.steering_motor_ang_3  = message->GetSignal("steering_motor_ang_3_fdbk")->GetResult();
-  pub_steering_ext_->publish(out);
+  auto out = std::make_unique<SteeringExtendedReport>();
+  out->header.stamp = msg->header.stamp;
+  out->steering_motor_ang_1  = message->GetSignal("steering_motor_ang_1_fdbk")->GetResult();
+  out->steering_motor_ang_2  = message->GetSignal("steering_motor_ang_2_fdbk")->GetResult();
+  out->steering_motor_ang_3  = message->GetSignal("steering_motor_ang_3_fdbk")->GetResult();
+  pub_steering_ext_->publish(std::move(out));
 }
 
 void RaptorDbwCAN::recvDOLapTimeRpt(const Frame::SharedPtr msg)
@@ -355,12 +356,12 @@ void RaptorDbwCAN::recvDOLapTimeRpt(const Frame::SharedPtr msg)
     return;
   message->SetFrame(msg);
 
-  LapTimeReport out;
-  out.stamp = msg->header.stamp;
-  out.laps = message->GetSignal("laps")->GetResult();
-  out.lap_time = message->GetSignal("lap_time")->GetResult();
-  out.time_stamp = message->GetSignal("time_stamp")->GetResult(); 
-  pub_timing_report_->publish(out);
+  auto out = std::make_unique<LapTimeReport>();
+  out->stamp = msg->header.stamp;
+  out->laps = message->GetSignal("laps")->GetResult();
+  out->lap_time = message->GetSignal("lap_time")->GetResult();
+  out->time_stamp = message->GetSignal("time_stamp")->GetResult(); 
+  pub_timing_report_->publish(std::move(out));
 }
 
 void RaptorDbwCAN::recvDORcToCtRpt(const Frame::SharedPtr msg)
@@ -371,15 +372,15 @@ void RaptorDbwCAN::recvDORcToCtRpt(const Frame::SharedPtr msg)
     return;
   message->SetFrame(msg);
 
-  RcToCt out;
-  out.stamp = msg->header.stamp;
-  out.rolling_counter = message->GetSignal("base_to_car_heartbeat")->GetResult();
-  out.track_flag = message->GetSignal("track_flag")->GetResult();
-  out.veh_flag = message->GetSignal("veh_flag")->GetResult(); 
-  out.veh_rank = message->GetSignal("veh_rank")->GetResult();
-  out.lap_count = message->GetSignal("lap_count")->GetResult();
-  out.lap_distance = message->GetSignal("lap_distance")->GetResult();
-  pub_rc_to_ct_->publish(out);
+  auto out = std::make_unique<RcToCt>();
+  out->stamp = msg->header.stamp;
+  out->rolling_counter = message->GetSignal("base_to_car_heartbeat")->GetResult();
+  out->track_flag = message->GetSignal("track_flag")->GetResult();
+  out->veh_flag = message->GetSignal("veh_flag")->GetResult(); 
+  out->veh_rank = message->GetSignal("veh_rank")->GetResult();
+  out->lap_count = message->GetSignal("lap_count")->GetResult();
+  out->lap_distance = message->GetSignal("lap_distance")->GetResult();
+  pub_rc_to_ct_->publish(std::move(out));
 }
 
 void RaptorDbwCAN::recvWheelSpeedRpt(const Frame::SharedPtr msg)
@@ -442,16 +443,16 @@ void RaptorDbwCAN::recvBrake2Rpt(const Frame::SharedPtr msg)
   if (msg->dlc < message->GetDlc())
     return;
 
-  Brake2Report out;
-  out.header.stamp = msg->header.stamp;
-  out.front_brake_pressure = message->GetSignal(
+  auto out = std::make_unique<Brake2Report>();
+  out->header.stamp = msg->header.stamp;
+  out->front_brake_pressure = message->GetSignal(
     "brake_pressure_fdbk_front")->GetResult();
-  out.rear_brake_pressure  = message->GetSignal(
+  out->rear_brake_pressure  = message->GetSignal(
     "brake_pressure_fdbk_rear")->GetResult();
-  out.rolling_counter = message->GetSignal(
+  out->rolling_counter = message->GetSignal(
     "brk_pressure_fdbk_counter")->GetResult();
 
-  pub_brake_2_report_->publish(out);
+  pub_brake_2_report_->publish(std::move(out));
 }
 
 void RaptorDbwCAN::recvDOMiscRpt(const Frame::SharedPtr msg)
@@ -463,13 +464,13 @@ void RaptorDbwCAN::recvDOMiscRpt(const Frame::SharedPtr msg)
 
   message->SetFrame(msg);
 
-  MiscReport out;
-  out.stamp = msg->header.stamp;
-  out.sys_state = message->GetSignal("sys_state")->GetResult(); 
-  out.safety_switch_state = message->GetSignal("safety_switch_state")->GetResult(); 
-  out.mode_switch_state = message->GetSignal("mode_switch_state")->GetResult();
-  out.battery_voltage = message->GetSignal("battery_voltage")->GetResult();
-  pub_misc_do_->publish(out);
+  auto out = std::make_unique<MiscReport>();
+  out->stamp = msg->header.stamp;
+  out->sys_state = message->GetSignal("sys_state")->GetResult(); 
+  out->safety_switch_state = message->GetSignal("safety_switch_state")->GetResult(); 
+  out->mode_switch_state = message->GetSignal("mode_switch_state")->GetResult();
+  out->battery_voltage = message->GetSignal("battery_voltage")->GetResult();
+  pub_misc_do_->publish(std::move(out));
 }
 
 void RaptorDbwCAN::recvDODiagRpt(const Frame::SharedPtr msg)
@@ -481,27 +482,27 @@ void RaptorDbwCAN::recvDODiagRpt(const Frame::SharedPtr msg)
 
   message->SetFrame(msg);
 
-  DiagnosticReport out;
-  out.stamp = msg->header.stamp;
-  out.sd_system_warning = message->GetSignal("sd_system_warning")->GetResult();
-  out.sd_system_failure = message->GetSignal("sd_system_failure")->GetResult();
-  out.motec_warning = message->GetSignal("motec_warning")->GetResult();
-  out.sd_brake_warning1 = message->GetSignal("sd_brake_warning1")->GetResult();
-  out.sd_brake_warning2 = message->GetSignal("sd_brake_warning2")->GetResult();
-  out.sd_brake_warning3 = message->GetSignal("sd_brake_warning3")->GetResult();
-  out.sd_steer_warning1 = message->GetSignal("sd_steer_warning1")->GetResult();
-  out.sd_steer_warning2 = message->GetSignal("sd_steer_warning2")->GetResult();
-  out.sd_steer_warning3 = message->GetSignal("sd_steer_warning3")->GetResult();
-  out.est1_oos_front_brk = message->GetSignal("est1_oos_front_brk")->GetResult();
-  out.est2_oos_rear_brk = message->GetSignal("est2_oos_rear_brk")->GetResult();
-  out.est3_low_eng_speed = message->GetSignal("est3_low_eng_speed")->GetResult();
-  out.est4_sd_comms_loss = message->GetSignal("est4_sd_comms_loss")->GetResult();
-  out.est5_motec_comms_loss = message->GetSignal("est5_motec_comms_loss")->GetResult();
-  out.est6_sd_ebrake = message->GetSignal("est6_sd_ebrake")->GetResult();
-  out.adlink_hb_lost = message->GetSignal("adlink_hb_lost")->GetResult();
-  out.rc_lost = message->GetSignal("rc_lost")->GetResult();
+  auto out = std::make_unique<DiagnosticReport>();
+  out->stamp = msg->header.stamp;
+  out->sd_system_warning = message->GetSignal("sd_system_warning")->GetResult();
+  out->sd_system_failure = message->GetSignal("sd_system_failure")->GetResult();
+  out->motec_warning = message->GetSignal("motec_warning")->GetResult();
+  out->sd_brake_warning1 = message->GetSignal("sd_brake_warning1")->GetResult();
+  out->sd_brake_warning2 = message->GetSignal("sd_brake_warning2")->GetResult();
+  out->sd_brake_warning3 = message->GetSignal("sd_brake_warning3")->GetResult();
+  out->sd_steer_warning1 = message->GetSignal("sd_steer_warning1")->GetResult();
+  out->sd_steer_warning2 = message->GetSignal("sd_steer_warning2")->GetResult();
+  out->sd_steer_warning3 = message->GetSignal("sd_steer_warning3")->GetResult();
+  out->est1_oos_front_brk = message->GetSignal("est1_oos_front_brk")->GetResult();
+  out->est2_oos_rear_brk = message->GetSignal("est2_oos_rear_brk")->GetResult();
+  out->est3_low_eng_speed = message->GetSignal("est3_low_eng_speed")->GetResult();
+  out->est4_sd_comms_loss = message->GetSignal("est4_sd_comms_loss")->GetResult();
+  out->est5_motec_comms_loss = message->GetSignal("est5_motec_comms_loss")->GetResult();
+  out->est6_sd_ebrake = message->GetSignal("est6_sd_ebrake")->GetResult();
+  out->adlink_hb_lost = message->GetSignal("adlink_hb_lost")->GetResult();
+  out->rc_lost = message->GetSignal("rc_lost")->GetResult();
 
-  pub_diag_report_->publish(out);
+  pub_diag_report_->publish(std::move(out));
 }
 
 void RaptorDbwCAN::recvDOPtRptPart1(const Frame::SharedPtr msg)
@@ -617,9 +618,9 @@ void RaptorDbwCAN::recvBrakeCmd(const BrakeCmd::SharedPtr msg)
   NewEagle::DbcSignal * cnt = message->GetSignal("brk_pressure_cmd_counter");
   cnt->SetResult(msg->rolling_counter);
   
-  Frame frame = message->GetFrame();
+  auto frame = std::make_unique<Frame>(message->GetFrame());
   
-  pub_can_->publish(frame);
+  pub_can_->publish(std::move(frame));
 }
 
 void RaptorDbwCAN::recvAcceleratorPedalCmd(
@@ -632,9 +633,9 @@ void RaptorDbwCAN::recvAcceleratorPedalCmd(
   NewEagle::DbcSignal * cnt = message->GetSignal("acc_pedal_cmd_counter");
   cnt->SetResult(msg->rolling_counter);
 
-  Frame frame = message->GetFrame();
+  auto frame = std::make_unique<Frame>(message->GetFrame());
 
-  pub_can_->publish(frame);
+  pub_can_->publish(std::move(frame));
 }
 
 void RaptorDbwCAN::recvSteeringCmd(const SteeringCmd::SharedPtr msg)
@@ -655,17 +656,17 @@ void RaptorDbwCAN::recvSteeringCmd(const SteeringCmd::SharedPtr msg)
 
   message->GetSignal("steering_motor_cmd_counter")->SetResult(msg->rolling_counter);
   
-  Frame frame = message->GetFrame();
+  auto frame = std::make_unique<Frame>(message->GetFrame());
   
-  pub_can_->publish(frame);
+  pub_can_->publish(std::move(frame));
 }
 
 void RaptorDbwCAN::recvGearShiftCmd(const std_msgs::msg::Int8::SharedPtr msg) 
 {
   NewEagle::DbcMessage* message = dbwDbc_.GetMessage("gear_shift_cmd");
   message->GetSignal("desired_gear")->SetResult(msg->data);
-  can_msgs::msg::Frame frame = message->GetFrame();
-  pub_can_->publish(frame);
+  auto frame = std::make_unique<Frame>(message->GetFrame());
+  pub_can_->publish(std::move(frame));
 }
 
 void RaptorDbwCAN::recvCtCmd(const deep_orange_msgs::msg::CtReport::SharedPtr msg) 
@@ -677,9 +678,9 @@ void RaptorDbwCAN::recvCtCmd(const deep_orange_msgs::msg::CtReport::SharedPtr ms
   message->GetSignal("ct_state")->SetResult(msg->ct_state);
   message->GetSignal("ct_state_rolling_counter")->SetResult(msg->rolling_counter);
   message->GetSignal("veh_num")->SetResult(msg->veh_num);
-  can_msgs::msg::Frame frame = message->GetFrame();
+  auto frame = std::make_unique<Frame>(message->GetFrame());
 
-  pub_can_->publish(frame);
+  pub_can_->publish(std::move(frame));
 }
 
 void RaptorDbwCAN::timerTireCallback() {
@@ -707,7 +708,7 @@ void RaptorDbwCAN::disableSystem()
 
 void RaptorDbwCAN::publishJointStates(
   const rclcpp::Time stamp,
-  const WheelSpeedReport wheels)
+  const WheelSpeedReport& wheels)
 {
   double dt = stamp.seconds() - joint_state_.header.stamp.sec;
   joint_state_.velocity[JOINT_FL] = wheels.front_left;
@@ -728,7 +729,7 @@ void RaptorDbwCAN::publishJointStates(
 
 void RaptorDbwCAN::publishJointStates(
   const rclcpp::Time stamp,
-  const SteeringReport steering)
+  const SteeringReport& steering)
 {
   double dt = stamp.seconds() - joint_state_.header.stamp.sec;
   const double L = acker_wheelbase_;
