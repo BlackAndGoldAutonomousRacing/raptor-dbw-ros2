@@ -429,7 +429,7 @@ void RaptorDbwCAN::recvTireTempRpt(const Frame::SharedPtr msg,
   // fill in the fields: part1: 0..3, etc., corresponds to dbc signals _01, _02, ..._16.
   // fill in which tire: FL, FR, ...
   for (int index = (part-1)*4; index < part*4; index ++){
-    snprintf(buf, 3, "%02d", index+1);
+    snprintf(buf, 3, "%02d", 1+(index%16));
     tire_report_msg.fl_tire_temperature[index] =
         message->GetSignal(which + "_Tire_Temp_" + std::string(buf))->GetResult();
   }
