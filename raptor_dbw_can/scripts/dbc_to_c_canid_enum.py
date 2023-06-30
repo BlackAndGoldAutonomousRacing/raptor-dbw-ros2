@@ -38,6 +38,9 @@ def generate_c_canid_enum_header(dbcfile:str, enum_header_file:str):
             continue
         # we have found a canid entry
         terms = line.split(' ')
+        # handle extreme large values... they may not be within our scope.
+        if (int(terms[1]) > 0x7FFFFFFF):
+            continue
         # convert from decimal to hex, use upper-case letters, and remove '0x'
         canid_hex = hex(int(terms[1])).upper()[2:]
         # remove colon at the end
