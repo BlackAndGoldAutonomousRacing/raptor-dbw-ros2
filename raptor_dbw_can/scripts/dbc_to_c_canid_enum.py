@@ -28,7 +28,8 @@ header_end = """
 
 """
 
-def generate_c_canid_enum_header(dbcfile:str, enum_header_file:str):
+
+def generate_c_canid_enum_header(dbcfile: str, enum_header_file: str):
     with open(dbcfile, 'r') as f:
         lines = f.readlines()
         f.close()
@@ -52,8 +53,8 @@ def generate_c_canid_enum_header(dbcfile:str, enum_header_file:str):
             " * " + dbcfile + "\n",
             " *\n",
             " * To re-generate this file, run from the package directory:\n",
-            " * python ./scripts/dbc_to_c_canid_enum.py " + dbcfile + " " +\
-                    enum_header_file + "\n",
+            " * python ./scripts/dbc_to_c_canid_enum.py " + dbcfile + " " +
+            enum_header_file + "\n",
             " *",
             header_start
         ])
@@ -63,6 +64,7 @@ def generate_c_canid_enum_header(dbcfile:str, enum_header_file:str):
             f.write(key.upper() + ' = 0x' + value + ',\n')
         f.write(header_end)
         f.close()
+
 
 if __name__ == "__main__":
     generate_c_canid_enum_header(sys.argv[1], sys.argv[2])
