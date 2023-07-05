@@ -6,7 +6,7 @@ if(NOT CMAKE_C_STANDARD)
   set(CMAKE_C_STANDARD 99)
 endif()
 
-# Default to C++14
+# Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)
 endif()
@@ -22,6 +22,7 @@ ament_auto_find_build_dependencies()
 ament_auto_add_executable(${PROJECT_NAME}_node
   src/raptor_dbw_can_node.cpp
   src/raptor_dbw_can.cpp
+  src/raptor_dbw_msg_handling.cpp
 )
 
 target_compile_options(${PROJECT_NAME}_node PRIVATE -Wno-unused-function)

@@ -1,4 +1,24 @@
 #!/usr/bin/env python3
+
+"""
+Copyright 2023 Haoguang Yang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+_summary_ This script automatically extracts CAN IDs from a DBC file and
+generates a C++ header for inclusion in related sources.
+"""
+
 import sys
 
 header_start = """
@@ -9,12 +29,14 @@ header_start = """
 #ifndef RAPTOR_DBW_CAN__CANID_ENUM_HPP_
 #define RAPTOR_DBW_CAN__CANID_ENUM_HPP_
 
+#include <stdint.h>
+
 namespace raptor_dbw_can
 {
 #undef BUILD_ASSERT
 
 /** \\brief Enumeration of CAN message IDs */
-enum class MessageID
+enum class MessageID : uint32_t
 {
 
 """
@@ -39,9 +61,11 @@ def generate_c_canid_enum_header(dbcfile: str, enum_header_file: str):
             continue
         # we have found a canid entry
         terms = line.split(' ')
-        # handle extreme large values... they may not be within our scope.
-        if (int(terms[1]) > 0x7FFFFFFF):
-            continue
+        
+        # For some use cases, ignore extreme large values that fall beyond the scope.
+        # if (int(terms[1]) > 0x7FFFFFFF):
+        #    continue
+        
         # convert from decimal to hex, use upper-case letters, and remove '0x'
         canid_hex = hex(int(terms[1])).upper()[2:]
         # remove colon at the end
@@ -59,7 +83,7 @@ def generate_c_canid_enum_header(dbcfile: str, enum_header_file: str):
             header_start
         ])
         # sort using can_id
-        sorted_dict_items = sorted(can_ids.items(), key=lambda x: x[1])
+        sorted_dict_items = sorted(can_ids.items(), key=lambda x: int(x[1], 16))
         for key, value in sorted_dict_items:
             f.write(key.upper() + ' = 0x' + value + ',\n')
         f.write(header_end)

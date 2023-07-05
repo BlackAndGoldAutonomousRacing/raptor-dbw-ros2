@@ -13,6 +13,7 @@
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
 
   <depend>rclcpp</depend>
+  <depend>builtin_interfaces</depend>
   <depend>raptor_dbw_msgs</depend>
   <depend>can_msgs</depend>
   <depend>std_msgs</depend>
