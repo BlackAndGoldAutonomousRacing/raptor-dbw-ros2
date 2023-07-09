@@ -70,7 +70,7 @@ void RaptorDbwCAN::recvDORcToCtRpt(const Frame& msg) {
   DbcFrameRx dbcFrame{msg, MessageID::BASE_TO_CAR_SUMMARY, dbwDbc_, race_control_cmd_.stamp};
   if (!dbcFrame.valid()) return;
   dbcFrame("base_to_car_heartbeat", race_control_cmd_.rolling_counter)
-          ("veh_rank", race_control_cmd_.veh_rank)
+          ("veh_rank", race_control_cmd_.vehicle_rank)
           ("lap_count", race_control_cmd_.lap_count)
           ("lap_distance", race_control_cmd_.lap_distance)
           ("round_target_speed", race_control_cmd_.round_target_speed);
@@ -323,11 +323,13 @@ void RaptorDbwCAN::recvGearShiftCmd(std_msgs::msg::Int8::UniquePtr msg) {
 
 void RaptorDbwCAN::recvCtCmd(deep_orange_msgs::msg::CtReport::UniquePtr msg) {
   DbcFrameTx dbcFrame{MessageID::CT_REPORT, dbwDbc_};
-  dbcFrame("veh_num", msg->veh_num)
-          ("track_cond_ack", msg->track_cond_ack)
-          ("veh_sig_ack", msg->veh_sig_ack)
+  dbcFrame("veh_num", msg->vehicle_id)
           ("ct_state", msg->ct_state)
           ("ct_state_rolling_counter", msg->rolling_counter);
+  if (current_rc_type_ != RaceControlSystems::Marelli){
+    dbcFrame("track_cond_ack", msg->track_flag_ack)
+            ("veh_sig_ack", msg->vehicle_flag_ack);
+  }
   auto frame = std::make_unique<Frame>(dbcFrame.message->GetFrame());
   pub_can_->publish(std::move(frame));
 }
