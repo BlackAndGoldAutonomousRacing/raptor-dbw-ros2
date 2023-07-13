@@ -89,7 +89,7 @@
 #include <can_dbc_parser/DbcMessage.hpp>
 #include <can_dbc_parser/DbcSignal.hpp>
 
-#include "raptor_dbw_can/canid_enum.h"
+#include "raptor_dbw_can/canid_enum.hpp"
 
 using namespace std::chrono_literals;  // NOLINT
 
