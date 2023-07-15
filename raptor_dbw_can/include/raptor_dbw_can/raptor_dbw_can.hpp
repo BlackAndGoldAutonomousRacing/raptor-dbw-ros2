@@ -361,7 +361,7 @@ class RaptorDbwCAN : public rclcpp::Node {
   // double acker_track_;
   // double steering_ratio_;
 
-  typedef enum RaceControlSystems {
+  enum RaceControlSystems {
     Spoofed = 0,
     MyLaps,
     Marelli,
