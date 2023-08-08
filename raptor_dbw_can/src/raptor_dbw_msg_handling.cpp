@@ -173,8 +173,10 @@ void RaptorDbwCAN::recvDOPtRptPart1(const Frame& msg) {
   dbcFrame("throttle_position", pt_report_msg.throttle_position)
           ("engine_run_switch", pt_report_msg.engine_run_switch_status)
           ("current_gear", pt_report_msg.current_gear)
-          ("engine_rpm", pt_report_msg.engine_rpm)
-          ("vehicle_speed_kmph", pt_report_msg.vehicle_speed_kmph);
+          ("engine_speed_rpm", pt_report_msg.engine_rpm)
+          ("vehicle_speed_kmph", pt_report_msg.vehicle_speed_kmph)
+          ("engine_state", pt_report_msg.engine_on_status)
+          ("gear_shift_status", pt_report_msg.gear_shift_status);
 }
 
 void RaptorDbwCAN::recvDOPtRptPart2(const Frame& msg) {
